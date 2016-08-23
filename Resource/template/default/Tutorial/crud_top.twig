@@ -1,0 +1,78 @@
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'front_page' %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block main %}
+    <style type="text/css">
+        .tutorial-table {
+            padding :100px 0 0 0;
+        }
+        .tutorial-td {
+            border-right :1px dotted #aaaaaa;
+        }
+        .tutorial-box-top {
+            border-top :1px dotted #aaaaaa;
+        }
+    </style>
+    <div class="row">
+       <div class="col-sm-12">
+            <div class="main_wrap">
+                <h1>CRUDチュートリアル</h1>
+                <p>投稿を行なってください</p>
+                {% for message in app.session.getFlashBag.get('eccube.front.success') %} {#★フラッシュメッセージのチェックと書き出し ( 成功メッセージ )#}
+                    <p class="text-success"><bold>{{ message }}</bold></p>
+                {% endfor %}
+                {% for message in app.session.getFlashBag.get('eccube.front.error') %} {#★フラッシュメッセージのチェックと書き出す ( エラーメッセージ )#}
+                    <p class="text-danger"><bold>{{ message }}</bold></p>
+                {% endfor %}
+            </div>
+            <div id="form-wrapper">
+                {{ include('Tutorial/Resource/template/default/Tutorial/crud.twig') }}
+            </div>
+            {% set count = crudList | length %} {#★データーベース取得結果の配列長をカウント#}
+            {% if count > 0 %} {#★カウント結果が「0」であれば取得結果がないため、以下処理をキャンセル#}
+            <div class="row tutorial-table ">
+                 <div class="col-md-12">
+                     <div class="box tutorial-box-top">
+                         <div class="box-header">
+                             <h3 class="box-title"><span class="tutorial-table-caption">登録されている情報は&nbsp;&nbsp;<strong>{{ count }}</strong>&nbsp;&nbsp;件です</span></h3> {#★カウントを利用して取得結果を表示#}
+                         </div>
+                         <div class="box-body no-padding">
+                             <div class="item_list">
+                                 <div class="tableish">
+                                     <div class="item_box tr tutorial-tr">
+                                         <div class="th tutorial-td">投稿者ID</div>
+                                         <div class="th tutorial-td">投稿種別</div>
+                                         <div class="th tutorial-td">投稿者名</div>
+                                         <div class="th tutorial-td">タイトル</div>
+                                         <div class="th tutorial-td">投稿内容</div>
+                                         <div class="th tutorial-td">編集</div>
+                                         <div class="th tutorial-td">削除</div>
+                                     </div>
+                                     {% for Tutorial in crudList %} {#★for in 構文でオブジェクト配列から一つづつオブジェクトを取り出し#}
+                                     <div class="item_box tr tutorial-tr">
+                                         <div class="td tutorial-td">{{ Tutorial.id }}</div> {#★オブジェクトのメンバを表示#}
+                                         <div class="td tutorial-td">{{ Tutorial.reason }}</div>
+                                         <div class="td tutorial-td">{{ Tutorial.name }}</div>
+                                         <div class="td tutorial-td">{{ Tutorial.title }}</div>
+                                         <div class="td tutorial-td">{{ Tutorial.notes | nl2br }}</div>
+                                         <div class="td tutorial-td"><a class="btn btn-default btn-block btn-sm" href="{{ url('plugin_tutorial_crud_edit', {'id' : Tutorial.id}) }}">編集</a></div>
+                                         <div class="td tutorial-td">
+                                            <a class="btn btn-default btn-block btn-sm" href="{{ url('plugin_tutorial_crud_delete', {'id' : Tutorial.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この情報を削除してもよろしいですか？">削除</a>
+                                        </div>
+                                     </div>
+                                     {% endfor %}
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

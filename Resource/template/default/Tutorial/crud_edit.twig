@@ -1,0 +1,40 @@
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'front_page' %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block main %}
+    <style type="text/css">
+        .tutorial-table {
+            padding :100px 0 0 0;
+        }
+        .tutorial-td {
+            border-right :1px dotted #aaaaaa;
+        }
+        .tutorial-box-top {
+            border-top :1px dotted #aaaaaa;
+        }
+    </style>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="main_wrap">
+                <h1>CRUDチュートリアル</h1>
+                <p>編集を行なってください</p> {#★編集画面を示すリード文#}
+            </div>
+            <div>
+                {% for message in app.session.getFlashBag.get('eccube.front.success') %}
+                    <p class="text-success"><bold>{{ message }}</bold></p>
+                {% endfor %}
+                {% for message in app.session.getFlashBag.get('eccube.front.error') %}
+                    <p class="text-danger"><bold>{{ message }}</bold></p>
+                {% endfor %}
+            </div>
+            <div id="form-wrapper">
+                {{ include('Tutorial/Resource/template/default/Tutorial/crud.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

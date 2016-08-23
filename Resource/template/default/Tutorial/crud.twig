@@ -1,0 +1,50 @@
+<div>
+    {% for message in app.session.getFlashBag.get('eccube.front.success') %} {#★フラッシュメッセージのチェックと書き出し ( 成功メッセージ )#}
+        <p class="text-success"><bold>{{ message }}</bold></p>
+    {% endfor %}
+    {% for message in app.session.getFlashBag.get('eccube.front.error') %} {#★フラッシュメッセージのチェックと書き出す ( エラーメッセージ )#}
+        <p class="text-danger"><bold>{{ message }}</bold></p>
+    {% endfor %}
+</div>
+
+<div id="form-wrapper">
+
+    {{ form_start(forms) }}
+        {{ form_widget(forms._token)}}
+        <div class="dl_table" id="tutorial">
+            <dl>
+                <dt>
+                    <label class="control-label required" for="tutorial_reason">投稿種別</label><span class="required">必須</span>
+                </dt>
+                <dd class="form-group">
+                    {{ form_widget(forms.reason) }}
+                    {{ form_errors(forms.reason) }}
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    <label class="control-label required" for="tutorial_name">投稿者ハンドルネーム</label><span class="required">必須</span>
+                </dt>
+                <dd class="form-group">
+                    {{ form_widget(forms.name) }}
+                    {{ form_errors(forms.name) }}
+                </dd>
+            </dl>
+            <dl>
+                <dt><label class="control-label" for="tutorial_title">投稿のタイトル</label></dt>
+                <dd class="form-group">
+                    {{ form_widget(forms.title) }}
+                    {{ form_errors(forms.title) }}
+                </dd>
+            </dl>
+            <dl>
+                <dt><label class="control-label" for="tutorial_notes">内容</label></dt>
+                <dd class="form-group">
+                    {{ form_widget(forms.notes) }}
+                    {{ form_errors(forms.notes) }}
+                </dd>
+            </dl>
+        </div>
+    {{ form_end(forms) }}
+
+</div>
