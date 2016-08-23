@@ -22,9 +22,6 @@ class TutorialServiceProvider implements ServiceProviderInterface
 {
     public function register(BaseApplication $app)
     {
-        // プラグイン用設定画面
-        // $app->match('/' . $app['config']['admin_route'] . '/plugin/Tutorial/config', 'Plugin\Tutorial\Controller\ConfigController::index')->bind('plugin_Tutorial_config');
-
         // 独自コントローラ
         $app->match('/tutorial/crud', '\Plugin\Tutorial\Controller\TutorialController::index')->bind('plugin_tutorial_crud');
         $app->match('/tutorial/crud/edit/{id}', '\Plugin\Tutorial\Controller\TutorialController::edit')->bind('plugin_tutorial_crud_edit')->assert('id', '^[1-9]+[0]?$'); // ★ルーティングとURLパラメーターの設定を追記

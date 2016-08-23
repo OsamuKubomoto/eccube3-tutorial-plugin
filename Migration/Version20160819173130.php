@@ -64,28 +64,23 @@ class Version20160819173130 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
         if (!$schema->hasTable('plg_tutorial')) {
             $schema->dropTable('plg_tutorial');
         }
-
-        $app = \Eccube\Application::getInstance(); // ★EC-CUBEのアプリケーションクラスを取得
-        $em = $app['orm.em']; // ★エンティティマネージャーを取得
-        $qb = $em->createQueryBuilder(); // ★クエリビルダーを取得
-
-        $qb->select('pl') // ★該当画面情報が保存されているかを確認するためのSQLを生成
+        $app = \Eccube\Application::getInstance();
+        $em = $app['orm.em'];
+        $qb = $em->createQueryBuilder();
+        $qb->select('pl')
             ->from('\Eccube\Entity\PageLayout', 'pl')
             ->where('pl.url = :Url')
             ->setParameter('Url', 'plugin_tutorial_crud');
-
-        $res = $Point = $qb->getQuery()->getResult(); // ★情報取得
-
-        if(count($res) > 0){ // ★該当情報が保存されていれば、削除処理
-            $qb->delete() // ★該当画面情報を削除するための、SQLを生成
-                ->from('\Eccube\Entity\PageLayout', 'pl')
-                ->where('pl.url = :Url')
-                ->setParamater('Url', 'plugin_tutorial_crud');
-            $res = $Point = $qb->getQuery()->execute(); // ★削除処理実行
+        $res = $qb->getQuery()->getResult();
+        if(count($res) > 0){
+            $qb->delete('p')
+                ->from('\Eccube\Entity\PageLayout', 'p')
+                ->where('p.url = :Url')
+                ->setParameter('Url', 'plugin_tutorial_crud');
+            $res = $qb->getQuery()->execute();
         }
     }
 }

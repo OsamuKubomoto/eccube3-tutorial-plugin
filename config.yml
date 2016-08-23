@@ -1,5 +1,4 @@
 name: Tutorial
-# event: TutorialEvent
 code: Tutorial
 version: 1.0.0
 service:
